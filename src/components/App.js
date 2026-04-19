@@ -1,4 +1,3 @@
-import Header from "./Header";
 import Main from "./Main";
 import Loader from "./Loader";
 import Error from "./Error";
@@ -108,7 +107,6 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header />
       <Main>
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}

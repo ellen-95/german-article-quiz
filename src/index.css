@@ -1,11 +1,19 @@
 :root {
-  --color-darkest: #343a40;
-  --color-dark: #495057;
-  --color-medium: #ced4da;
-  --color-light: #f1f3f5;
-
-  --color-theme: #1098ad;
-  --color-accent: #ffa94d;
+  --color-page: #f4efe6;
+  --color-card: #fffdf9;
+  --color-card-soft: #f8f5ee;
+  --color-text: #1f2a44;
+  --color-muted: #6f7a8c;
+  --color-border: #d9dee7;
+  --color-theme: #43b9af;
+  --color-theme-dark: #2c8f88;
+  --color-correct-bg: #e7f8ec;
+  --color-correct-border: #63d98b;
+  --color-correct-text: #247348;
+  --color-wrong-bg: #fdeaea;
+  --color-wrong-border: #f06b6b;
+  --color-wrong-text: #c93d3d;
+  --shadow-soft: 0 20px 45px rgba(31, 42, 68, 0.12);
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Codystar&display=swap");
@@ -24,9 +32,9 @@ html {
 
 body {
   min-height: 100vh;
-  color: var(--color-light);
-  background-color: var(--color-darkest);
-  padding: 3.2rem;
+  color: var(--color-text);
+  background-color: var(--color-page);
+  padding: 3.2rem 2rem;
 }
 
 .app {
@@ -34,18 +42,19 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 2.4rem;
 }
 
 .main {
-  width: 50rem;
+  width: min(100%, 82rem);
 }
 
 .app-header {
-  width: 66rem;
-  margin-bottom: 4rem;
+  width: min(100%, 82rem);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 1.6rem;
 }
 
 .error {
@@ -53,93 +62,108 @@ body {
   font-size: 1.6rem;
   font-weight: 500;
   padding: 2rem;
-  background-color: #495057;
-  border-radius: 100px;
+  background-color: var(--color-card);
+  border-radius: 2.4rem;
+  box-shadow: var(--shadow-soft);
 }
 
 img {
-  width: 14rem;
+  width: 8rem;
 }
 
 h1 {
-  font-family: "Codystar";
-  font-size: 5.6rem;
+  font-family: "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(3.2rem, 6vw, 5.8rem);
+  font-weight: 800;
+  color: var(--color-text);
 }
 
 h2 {
-  font-size: 3.6rem;
-  margin-bottom: 2rem;
+  font-size: clamp(3rem, 5vw, 5.2rem);
+  margin-bottom: 1.6rem;
+  color: var(--color-text);
 }
 
 h3 {
-  font-size: 2.4rem;
-  font-weight: 600;
+  font-size: 2.2rem;
+  font-weight: 500;
   margin-bottom: 4rem;
+  color: var(--color-muted);
 }
 
 h4 {
-  font-size: 2.2rem;
-  font-weight: 600;
-  margin-bottom: 2.4rem;
-}
-
-.question-level {
-  font-size: 1.8rem;
-  color: var(--color-medium);
-  margin-bottom: 2.4rem;
+  margin: 0;
 }
 
 .start {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: var(--color-card);
+  border-radius: 3.6rem;
+  box-shadow: var(--shadow-soft);
+  padding: 5.6rem 4rem;
+  text-align: center;
 }
 
 .progress {
-  margin-bottom: 4rem;
-  display: grid;
-  justify-content: space-between;
+  margin-bottom: 2.4rem;
+  display: flex;
+  flex-direction: column;
   gap: 1.2rem;
-  grid-template-columns: auto auto;
+  align-items: center;
+  color: var(--color-muted);
+}
+
+.progress-text {
   font-size: 1.8rem;
-  color: var(--color-medium);
+  font-weight: 700;
+  color: var(--color-muted);
+}
+
+.progress-score {
+  font-size: 1.5rem;
 }
 
 progress {
   -webkit-appearance: none;
   width: 100%;
-  height: 12px;
-  grid-column: 1 / -1;
+  height: 1.4rem;
+  border: none;
 }
 
 ::-webkit-progress-bar {
-  background-color: var(--color-medium);
-  border-radius: 100px;
+  background-color: #e5e8ee;
+  border-radius: 999px;
 }
+
 ::-webkit-progress-value {
   background-color: var(--color-theme);
-  border-radius: 100px;
+  border-radius: 999px;
+}
+
+::-moz-progress-bar {
+  background-color: var(--color-theme);
+  border-radius: 999px;
 }
 
 .btn {
   display: block;
   font-family: inherit;
-  color: inherit;
+  color: var(--color-text);
   font-size: 2rem;
-  border: 2px solid var(--color-dark);
-  background-color: var(--color-dark);
-  padding: 1.2rem 2.4rem;
+  font-weight: 700;
+  border: 2px solid transparent;
+  background-color: var(--color-card);
+  padding: 1.6rem 2.4rem;
   cursor: pointer;
-  border-radius: 100px;
-  transition: 0.3s;
+  border-radius: 2rem;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s,
+    transform 0.2s, box-shadow 0.2s;
 }
 
 .btn:not([disabled]):hover {
-  background-color: var(--color-darkest);
-}
-
-.btn-option:not([disabled]):hover {
-  transform: translateX(1.2rem);
+  transform: translateY(-2px);
 }
 
 .btn[disabled]:hover {
@@ -147,45 +171,92 @@ progress {
 }
 
 .btn-ui {
-  float: right;
+  background-color: var(--color-theme);
+  color: #ffffff;
+  border-color: var(--color-theme);
+  box-shadow: 0 10px 24px rgba(67, 185, 175, 0.2);
+}
+
+.result + .highscore + .btn-ui {
+  margin: 0 auto;
+}
+
+.btn-ui:not([disabled]):hover {
+  background-color: var(--color-theme-dark);
+  border-color: var(--color-theme-dark);
+}
+
+.question-card {
+  background-color: var(--color-card);
+  border-radius: 3.6rem;
+  box-shadow: var(--shadow-soft);
+  padding: 5.2rem 4.8rem 4.4rem;
+}
+
+.question-content {
+  text-align: center;
+  margin-bottom: 3.2rem;
+}
+
+.question-word {
+  font-size: clamp(4.5rem, 8vw, 7.4rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--color-text);
+  margin-bottom: 2rem;
+}
+
+.question-subtitle {
+  font-size: 1.8rem;
+  color: var(--color-muted);
 }
 
 .options {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
-  margin-bottom: 3.2rem;
+  align-items: center;
+  gap: 1.6rem;
 }
 
 .btn-option {
-  width: 100%;
-  text-align: left;
+  width: min(100%, 36rem);
+  min-height: 7.2rem;
+  border-color: var(--color-border);
+  background-color: var(--color-card);
+  text-align: center;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
 }
 
 .btn-option.correct {
-  background-color: var(--color-theme);
-  border: 2px solid var(--color-theme);
-  color: var(--color-light);
-}
-.btn-option.wrong {
-  background-color: var(--color-accent);
-  border: 2px solid var(--color-accent);
-  color: var(--color-darkest);
+  background-color: var(--color-correct-bg);
+  border-color: var(--color-correct-border);
+  color: var(--color-correct-text);
 }
 
-.answer {
-  transform: translateX(2rem);
+.btn-option.wrong {
+  background-color: var(--color-wrong-bg);
+  border-color: var(--color-wrong-border);
+  color: var(--color-wrong-text);
+}
+
+.btn-option.muted {
+  background-color: var(--color-card-soft);
+  border-color: var(--color-border);
+  color: #9aa3b2;
+  box-shadow: none;
 }
 
 .result {
-  background-color: var(--color-theme);
-  color: var(--color-light);
-  border-radius: 100px;
+  background-color: var(--color-card);
+  color: var(--color-text);
+  border-radius: 3rem;
   text-align: center;
-  padding: 2rem 0;
+  padding: 2.4rem;
   font-size: 2rem;
   font-weight: 500;
   margin-bottom: 1.6rem;
+  box-shadow: var(--shadow-soft);
 }
 
 .result span {
@@ -197,6 +268,7 @@ progress {
   font-size: 1.8rem;
   text-align: center;
   margin-bottom: 4.8rem;
+  color: var(--color-muted);
 }
 
 .loader-container {
@@ -205,18 +277,33 @@ progress {
   align-items: center;
   margin-top: 4rem;
   gap: 1.6rem;
-
-  color: var(--color-medium);
+  color: var(--color-muted);
   font-size: 1.4rem;
 }
 
+.loader-container p {
+  color: var(--color-muted);
+}
+
+.loader {
+  color: var(--color-theme);
+}
+
+footer {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.6rem;
+}
+
 .timer {
-  float: left;
   font-size: 1.8rem;
-  color: var(--color-medium);
-  border: 2px solid var(--color-dark);
-  padding: 1.35rem 2.8rem;
-  border-radius: 100px;
+  color: var(--color-muted);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card);
+  padding: 1.35rem 2.4rem;
+  border-radius: 999px;
 }
 
 /* CREDIT: https://dev.to/afif/i-made-100-css-loaders-for-your-next-project-4eje */
@@ -257,6 +344,34 @@ progress {
   font-size: 2rem;
   font-weight: bold;
   margin: 6rem;
+}
+
+@media (max-width: 700px) {
+  body {
+    padding: 2rem 1.6rem;
+  }
+
+  .app-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .start,
+  .question-card {
+    padding: 4rem 2.4rem;
+    border-radius: 2.8rem;
+  }
+
+  footer {
+    flex-direction: column;
+  }
+
+  .btn-ui,
+  .timer {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
 }
 
 .counter * {
