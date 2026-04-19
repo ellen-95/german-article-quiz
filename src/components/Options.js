@@ -4,23 +4,26 @@ function Options({ question, dispatch, answer }) {
 
   return (
     <div className="options">
-      {articles.map((article) => (
-        <button
-          className={`btn btn-option ${article === answer ? "answer" : ""} 
-          ${
-            hasAnswered
-              ? article === question.article
-                ? "correct"
-                : "wrong"
-              : ""
-          }`}
-          key={article}
-          disabled={hasAnswered}
-          onClick={() => dispatch({ type: "newAnswer", payload: article })}
-        >
-          {article}
-        </button>
-      ))}
+      {articles.map((article) => {
+        let buttonClass = "btn btn-option";
+
+        if (hasAnswered) {
+          if (article === question.article) buttonClass += " correct";
+          else if (article === answer) buttonClass += " wrong";
+          else buttonClass += " muted";
+        }
+
+        return (
+          <button
+            className={buttonClass}
+            key={article}
+            disabled={hasAnswered}
+            onClick={() => dispatch({ type: "newAnswer", payload: article })}
+          >
+            {article}
+          </button>
+        );
+      })}
     </div>
   );
 }
