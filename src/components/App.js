@@ -10,7 +10,7 @@ import FinishScreen from "./FinishScreen";
 import Footer from "./Footer";
 import Timer from "./Timer";
 
-const SECS_PER_QUESTION = 30;
+const SECS_PER_QUESTION = 10;
 
 const initialState = {
   questions: [],
@@ -105,9 +105,11 @@ export default function App() {
       .catch((err) => dispatch({ type: "dataFailed" }));
   }, []);
 
+  const isCenteredScreen = status === "ready" || status === "finished";
+
   return (
     <div className="app">
-      <Main>
+      <Main className={isCenteredScreen ? "main-centered" : ""}>
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
         {status === "ready" && (
