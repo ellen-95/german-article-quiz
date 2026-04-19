@@ -20,7 +20,7 @@ const initialState = {
   status: "loading",
   index: 0,
   answer: null,
-  points: 0,
+  correctAnswers: 0,
   highScore: 0,
   secondsRemaining: null,
 };
@@ -50,10 +50,10 @@ function reducer(state, action) {
       return {
         ...state,
         answer: action.payload,
-        points:
-          action.payload === question.correctOption
-            ? state.points + question.points
-            : state.points,
+        correctAnswers:
+          action.payload === question.article
+            ? state.correctAnswers + 1
+            : state.correctAnswers,
       };
 
     case "nextQuestion":
@@ -64,7 +64,9 @@ function reducer(state, action) {
         ...state,
         status: "finished",
         highScore:
-          state.points > state.highScore ? state.points : state.highScore,
+          state.correctAnswers > state.highScore
+            ? state.correctAnswers
+            : state.highScore,
       };
 
     case "restart":
@@ -84,14 +86,18 @@ function reducer(state, action) {
 
 export default function App() {
   const [
-    { questions, status, index, answer, points, highScore, secondsRemaining },
+    {
+      questions,
+      status,
+      index,
+      answer,
+      correctAnswers,
+      highScore,
+      secondsRemaining,
+    },
     dispatch,
   ] = useReducer(reducer, initialState);
   const numQuestions = questions.length;
-  const maxPossiblePoints = questions.reduce(
-    (prev, cur) => prev + cur.points,
-    0,
-  );
 
   useEffect(() => {
     fetch("http://localhost:8000/questions")
@@ -114,8 +120,7 @@ export default function App() {
             <Progress
               index={index}
               numQuestions={numQuestions}
-              points={points}
-              maxPossiblePoints={maxPossiblePoints}
+              correctAnswers={correctAnswers}
               answer={answer}
             />
             <Question
@@ -137,8 +142,8 @@ export default function App() {
 
         {status === "finished" && (
           <FinishScreen
-            points={points}
-            maxPossiblePoints={maxPossiblePoints}
+            correctAnswers={correctAnswers}
+            numQuestions={numQuestions}
             highScore={highScore}
             dispatch={dispatch}
           />

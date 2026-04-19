@@ -1,139 +1,34 @@
 {
   "questions": [
-    {
-      "question": "Which is the most popular JavaScript framework?",
-      "options": ["Angular", "React", "Svelte", "Vue"],
-      "correctOption": 1,
-      "points": 10
-    },
-    {
-      "question": "Which company invented React?",
-      "options": ["Google", "Apple", "Netflix", "Facebook"],
-      "correctOption": 3,
-      "points": 10
-    },
-    {
-      "question": "What's the fundamental building block of React apps?",
-      "options": ["Components", "Blocks", "Elements", "Effects"],
-      "correctOption": 0,
-      "points": 10
-    },
-    {
-      "question": "What's the name of the syntax we use to describe the UI in React components?",
-      "options": ["FBJ", "Babel", "JSX", "ES2015"],
-      "correctOption": 2,
-      "points": 10
-    },
-    {
-      "question": "How does data flow naturally in React apps?",
-      "options": [
-        "From parents to children",
-        "From children to parents",
-        "Both ways",
-        "The developers decides"
-      ],
-      "correctOption": 0,
-      "points": 10
-    },
-    {
-      "question": "How to pass data into a child component?",
-      "options": ["State", "Props", "PropTypes", "Parameters"],
-      "correctOption": 1,
-      "points": 10
-    },
-    {
-      "question": "When to use derived state?",
-      "options": [
-        "Whenever the state should not trigger a re-render",
-        "Whenever the state can be synchronized with an effect",
-        "Whenever the state should be accessible to all components",
-        "Whenever the state can be computed from another state variable"
-      ],
-      "correctOption": 3,
-      "points": 30
-    },
-    {
-      "question": "What triggers a UI re-render in React?",
-      "options": [
-        "Running an effect",
-        "Passing props",
-        "Updating state",
-        "Adding event listeners to DOM elements"
-      ],
-      "correctOption": 2,
-      "points": 20
-    },
-    {
-      "question": "When do we directly \"touch\" the DOM in React?",
-      "options": [
-        "When we need to listen to an event",
-        "When we need to change the UI",
-        "When we need to add styles",
-        "Almost never"
-      ],
-      "correctOption": 3,
-      "points": 20
-    },
-    {
-      "question": "In what situation do we use a callback to update state?",
-      "options": [
-        "When updating the state will be slow",
-        "When the updated state is very data-intensive",
-        "When the state update should happen faster",
-        "When the new state depends on the previous state"
-      ],
-      "correctOption": 3,
-      "points": 30
-    },
-    {
-      "question": "If we pass a function to useState, when will that function be called?",
-      "options": [
-        "On each re-render",
-        "Each time we update the state",
-        "Only on the initial render",
-        "The first time we update the state"
-      ],
-      "correctOption": 2,
-      "points": 30
-    },
-    {
-      "question": "Which hook to use for an API request on the component's initial render?",
-      "options": ["useState", "useEffect", "useRef", "useReducer"],
-      "correctOption": 1,
-      "points": 10
-    },
-    {
-      "question": "Which variables should go into the useEffect dependency array?",
-      "options": [
-        "Usually none",
-        "All our state variables",
-        "All state and props referenced in the effect",
-        "All variables needed for clean up"
-      ],
-      "correctOption": 2,
-      "points": 30
-    },
-    {
-      "question": "An effect will always run on the initial render.",
-      "options": [
-        "True",
-        "It depends on the dependency array",
-        "False",
-        "In depends on the code in the effect"
-      ],
-      "correctOption": 0,
-      "points": 30
-    },
-    {
-      "question": "When will an effect run if it doesn't have a dependency array?",
-      "options": [
-        "Only when the component mounts",
-        "Only when the component unmounts",
-        "The first time the component re-renders",
-        "Each time the component is re-rendered"
-      ],
-      "correctOption": 3,
-      "points": 20
-    }
+    { "id": 1, "word": "Tisch", "article": "der", "level": "A1" },
+    { "id": 2, "word": "Lampe", "article": "die", "level": "A1" },
+    { "id": 3, "word": "Buch", "article": "das", "level": "A1" },
+    { "id": 4, "word": "Stuhl", "article": "der", "level": "A1" },
+    { "id": 5, "word": "Tasche", "article": "die", "level": "A1" },
+    { "id": 6, "word": "Fenster", "article": "das", "level": "A1" },
+    { "id": 7, "word": "Apfel", "article": "der", "level": "A1" },
+    { "id": 8, "word": "Banane", "article": "die", "level": "A1" },
+    { "id": 9, "word": "Wasser", "article": "das", "level": "A1" },
+    { "id": 10, "word": "Lehrer", "article": "der", "level": "A1" },
+    { "id": 11, "word": "Schule", "article": "die", "level": "A1" },
+    { "id": 12, "word": "Kind", "article": "das", "level": "A1" },
+    { "id": 13, "word": "Bahnhof", "article": "der", "level": "A2" },
+    { "id": 14, "word": "Zeitung", "article": "die", "level": "A2" },
+    { "id": 15, "word": "Fahrrad", "article": "das", "level": "A2" },
+    { "id": 16, "word": "Kellner", "article": "der", "level": "A2" },
+    { "id": 17, "word": "Rechnung", "article": "die", "level": "A2" },
+    { "id": 18, "word": "Frühstück", "article": "das", "level": "A2" },
+    { "id": 19, "word": "Urlaub", "article": "der", "level": "A2" },
+    { "id": 20, "word": "Einladung", "article": "die", "level": "A2" },
+    { "id": 21, "word": "Museum", "article": "das", "level": "A2" },
+    { "id": 22, "word": "Beruf", "article": "der", "level": "A2" },
+    { "id": 23, "word": "Umgebung", "article": "die", "level": "B1" },
+    { "id": 24, "word": "Gespräch", "article": "das", "level": "B1" },
+    { "id": 25, "word": "Fortschritt", "article": "der", "level": "B1" },
+    { "id": 26, "word": "Erfahrung", "article": "die", "level": "B1" },
+    { "id": 27, "word": "Verhalten", "article": "das", "level": "B1" },
+    { "id": 28, "word": "Gedanke", "article": "der", "level": "B1" },
+    { "id": 29, "word": "Entscheidung", "article": "die", "level": "B1" },
+    { "id": 30, "word": "Werkzeug", "article": "das", "level": "B1" }
   ]
 }

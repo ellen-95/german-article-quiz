@@ -83,6 +83,12 @@ h4 {
   margin-bottom: 2.4rem;
 }
 
+.question-level {
+  font-size: 1.8rem;
+  color: var(--color-medium);
+  margin-bottom: 2.4rem;
+}
+
 .start {
   display: flex;
   flex-direction: column;
