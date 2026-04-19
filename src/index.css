@@ -49,6 +49,13 @@ body {
   width: min(100%, 82rem);
 }
 
+.main-centered {
+  min-height: calc(100vh - 6.4rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .app-header {
   width: min(100%, 82rem);
   display: flex;
@@ -104,6 +111,10 @@ h4 {
   box-shadow: var(--shadow-soft);
   padding: 5.6rem 4rem;
   text-align: center;
+}
+
+.finish {
+  width: 100%;
 }
 
 .progress {
@@ -349,6 +360,10 @@ footer {
 @media (max-width: 700px) {
   body {
     padding: 2rem 1.6rem;
+  }
+
+  .main-centered {
+    min-height: calc(100vh - 4rem);
   }
 
   .app-header {

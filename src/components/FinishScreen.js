@@ -8,7 +8,7 @@ function FinishScreen({ correctAnswers, numQuestions, highScore, dispatch }) {
   if (percentage === 0) emoji = "🙈";
 
   return (
-    <>
+    <div className="finish">
       <p className="result">
         <span>{emoji}</span>You got <strong>{correctAnswers}</strong> out of{" "}
         {numQuestions} correct ({Math.ceil(percentage)}%)
@@ -20,7 +20,7 @@ function FinishScreen({ correctAnswers, numQuestions, highScore, dispatch }) {
       >
         Restart Quiz
       </button>
-    </>
+    </div>
   );
 }
 
