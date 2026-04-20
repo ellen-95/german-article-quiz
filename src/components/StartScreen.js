@@ -1,8 +1,4 @@
-import { useState } from "react";
-
-function StartScreen({ numQuestions, dispatch }) {
-  const [selectedMode, setSelectedMode] = useState(null);
-
+function StartScreen({ numQuestions, mode, setMode, onStart }) {
   return (
     <div className="start">
       <h2>Welcome to the German Article Quiz!</h2>
@@ -12,17 +8,17 @@ function StartScreen({ numQuestions, dispatch }) {
         <div className="mode-buttons">
           <button
             className={`btn btn-mode ${
-              selectedMode === "practice" ? "btn-mode-selected" : ""
+              mode === "practice" ? "btn-mode-selected" : ""
             }`}
-            onClick={() => setSelectedMode("practice")}
+            onClick={() => setMode("practice")}
           >
             Practice Mode
           </button>
           <button
             className={`btn btn-mode ${
-              selectedMode === "test" ? "btn-mode-selected" : ""
+              mode === "test" ? "btn-mode-selected" : ""
             }`}
-            onClick={() => setSelectedMode("test")}
+            onClick={() => setMode("test")}
           >
             Test Mode
           </button>
@@ -31,8 +27,8 @@ function StartScreen({ numQuestions, dispatch }) {
 
       <button
         className="btn btn-ui"
-        disabled={!selectedMode}
-        onClick={() => dispatch({ type: "start" })}
+        disabled={!mode}
+        onClick={onStart}
       >
         Start Quiz
       </button>
