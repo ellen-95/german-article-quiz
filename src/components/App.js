@@ -22,6 +22,7 @@ const initialState = {
   correctAnswers: 0,
   highScore: 0,
   secondsRemaining: null,
+  wrongAnswers: [],
 };
 
 function reducer(state, action) {
@@ -46,13 +47,24 @@ function reducer(state, action) {
 
     case "newAnswer":
       const question = state.questions.at(state.index);
+      const isCorrectAnswer = action.payload === question.article;
+
       return {
         ...state,
         answer: action.payload,
-        correctAnswers:
-          action.payload === question.article
-            ? state.correctAnswers + 1
-            : state.correctAnswers,
+        correctAnswers: isCorrectAnswer
+          ? state.correctAnswers + 1
+          : state.correctAnswers,
+        wrongAnswers: isCorrectAnswer
+          ? state.wrongAnswers
+          : [
+              ...state.wrongAnswers,
+              {
+                word: question.word,
+                correctArticle: question.article,
+                selectedArticle: action.payload,
+              },
+            ],
       };
 
     case "nextQuestion":
@@ -139,6 +151,7 @@ export default function App() {
               question={questions[index]}
               dispatch={dispatch}
               answer={answer}
+              mode={mode}
             />
             <Footer>
               {mode === "test" && (
