@@ -42,12 +42,11 @@ function reducer(state, action) {
       return {
         ...state,
         status: "active",
-        secondsRemaining: state.questions.length * SECS_PER_QUESTION,
+        secondsRemaining: action.payload * SECS_PER_QUESTION,
       };
 
     case "newAnswer":
-      const question = state.questions.at(state.index);
-      const isCorrectAnswer = action.payload === question.article;
+      const isCorrectAnswer = action.payload === action.question.article;
 
       return {
         ...state,
@@ -60,8 +59,8 @@ function reducer(state, action) {
           : [
               ...state.wrongAnswers,
               {
-                word: question.word,
-                correctArticle: question.article,
+                word: action.question.word,
+                correctArticle: action.question.article,
                 selectedArticle: action.payload,
               },
             ],
@@ -97,6 +96,7 @@ function reducer(state, action) {
 
 export default function App() {
   const [mode, setMode] = useState(null);
+  const [level, setLevel] = useState(null);
   const [
     {
       questions,
@@ -110,7 +110,14 @@ export default function App() {
     },
     dispatch,
   ] = useReducer(reducer, initialState);
-  const numQuestions = questions.length;
+
+  const activeQuestions =
+    mode === "native"
+      ? questions.filter((question) => question.level === "Native")
+      : questions.filter((question) => question.level === level);
+
+  const numQuestions = activeQuestions.length;
+  const currentQuestion = activeQuestions[index];
 
   useEffect(() => {
     fetch("http://localhost:8000/questions")
@@ -122,9 +129,12 @@ export default function App() {
   const isCenteredScreen = status === "ready" || status === "finished";
 
   function handleStartQuiz() {
-    if (!mode) return;
+    const needsLevel = mode === "practice" || mode === "test";
 
-    dispatch({ type: "start" });
+    if (!mode) return;
+    if (needsLevel && !level) return;
+
+    dispatch({ type: "start", payload: numQuestions });
   }
 
   return (
@@ -134,9 +144,10 @@ export default function App() {
         {status === "error" && <Error />}
         {status === "ready" && (
           <StartScreen
-            numQuestions={numQuestions}
             mode={mode}
             setMode={setMode}
+            level={level}
+            setLevel={setLevel}
             onStart={handleStartQuiz}
           />
         )}
@@ -149,13 +160,13 @@ export default function App() {
               answer={answer}
             />
             <Question
-              question={questions[index]}
+              question={currentQuestion}
               dispatch={dispatch}
               answer={answer}
               mode={mode}
             />
             <Footer>
-              {mode === "test" && (
+              {(mode === "test" || mode === "native") && (
                 <Timer
                   dispatch={dispatch}
                   secondsRemaining={secondsRemaining}

@@ -18,14 +18,22 @@ function FinishScreen({
   if (percentage === 0) emoji = "🙈";
 
   const isPracticeMode = mode === "practice";
+  const isNativeMode = mode === "native";
 
   return (
     <div className="finish">
-      <p className="result">
+      <p className={`result ${isNativeMode ? "result-native" : ""}`}>
         {isPracticeMode ? (
           <>
             <span>🎉</span>You practiced the quiz today. Nice work keeping your
             German articles fresh, and you can continue learning tomorrow.
+          </>
+        ) : isNativeMode ? (
+          <>
+            <span>{emoji}</span>Not bad — maybe you really are German.
+            <br />
+            You got <strong>{correctAnswers}</strong> out of {numQuestions}{" "}
+            correct ({Math.round(percentage)}%)
           </>
         ) : (
           <>

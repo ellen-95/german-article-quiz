@@ -132,15 +132,42 @@ h4 {
   margin-bottom: 3.2rem;
 }
 
+.level-selector {
+  width: min(100%, 42rem);
+  margin-bottom: 3.2rem;
+}
+
 .mode-buttons {
   display: flex;
   flex-direction: column;
   gap: 1.4rem;
 }
 
+.level-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--color-muted);
+  margin-bottom: 1.6rem;
+}
+
+.level-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+
 .btn.btn-mode {
   width: 100%;
   padding: 2rem 2.4rem;
+  border: 2px solid #8dd7d0;
+  color: var(--color-theme-dark);
+  box-shadow: none;
+}
+
+.btn.btn-level {
+  width: 100%;
+  padding: 1.6rem 1.2rem;
   border: 2px solid #8dd7d0;
   color: var(--color-theme-dark);
   box-shadow: none;
@@ -363,6 +390,12 @@ progress {
   font-weight: 500;
   margin-bottom: 1.6rem;
   box-shadow: var(--shadow-soft);
+}
+
+.result-native {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--color-theme);
 }
 
 .result span {
