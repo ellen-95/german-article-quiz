@@ -3,7 +3,7 @@ import Loader from "./Loader";
 import Error from "./Error";
 import Question from "./Question";
 import NextButton from "./NextButton";
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import StartScreen from "./StartScreen";
 import Progress from "./Progress";
 import FinishScreen from "./FinishScreen";
@@ -84,6 +84,7 @@ function reducer(state, action) {
 }
 
 export default function App() {
+  const [mode, setMode] = useState(null);
   const [
     {
       questions,
@@ -107,13 +108,24 @@ export default function App() {
 
   const isCenteredScreen = status === "ready" || status === "finished";
 
+  function handleStartQuiz() {
+    if (!mode) return;
+
+    dispatch({ type: "start" });
+  }
+
   return (
     <div className="app">
       <Main className={isCenteredScreen ? "main-centered" : ""}>
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
         {status === "ready" && (
-          <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
+          <StartScreen
+            numQuestions={numQuestions}
+            mode={mode}
+            setMode={setMode}
+            onStart={handleStartQuiz}
+          />
         )}
         {status === "active" && (
           <>
@@ -129,7 +141,12 @@ export default function App() {
               answer={answer}
             />
             <Footer>
-              <Timer dispatch={dispatch} secondsRemaining={secondsRemaining} />
+              {mode === "test" && (
+                <Timer
+                  dispatch={dispatch}
+                  secondsRemaining={secondsRemaining}
+                />
+              )}
               <NextButton
                 dispatch={dispatch}
                 answer={answer}
