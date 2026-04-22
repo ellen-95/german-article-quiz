@@ -106,6 +106,7 @@ export default function App() {
       correctAnswers,
       highScore,
       secondsRemaining,
+      wrongAnswers,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -176,6 +177,8 @@ export default function App() {
             numQuestions={numQuestions}
             highScore={highScore}
             dispatch={dispatch}
+            mode={mode}
+            wrongAnswers={wrongAnswers}
           />
         )}
       </Main>

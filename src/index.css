@@ -161,6 +161,57 @@ h4 {
   width: 100%;
 }
 
+.finish-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.6rem;
+  margin-bottom: 2.4rem;
+}
+
+.finish-actions .btn {
+  flex: 1;
+}
+
+.review-section {
+  background-color: var(--color-card);
+  border-radius: 3rem;
+  padding: 2.4rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.review-empty {
+  font-size: 1.8rem;
+  text-align: center;
+  color: var(--color-muted);
+}
+
+.review-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.review-item {
+  padding: 1.8rem 2rem;
+  border-radius: 2rem;
+  background-color: var(--color-card-soft);
+  border: 1px solid var(--color-border);
+}
+
+.review-word {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.8rem;
+}
+
+.review-detail {
+  font-size: 1.7rem;
+  color: var(--color-muted);
+}
+
 .progress {
   margin-bottom: 2.4rem;
   display: flex;
