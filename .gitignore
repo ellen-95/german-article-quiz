@@ -4,6 +4,19 @@
 # production build output
 /build
 
+# local Python environments
+/.conda/
+/.venv/
+/venv/
+/env/
+
+# Python cache and local files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.python-version
+
 # tool caches
 .cache/
 node_modules/.cache/
