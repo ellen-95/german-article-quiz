@@ -11,7 +11,7 @@ import Footer from "./Footer";
 import Timer from "./Timer";
 
 const SECS_PER_QUESTION = 10;
-const API_URL = "http://127.0.0.1:5000/api/words";
+const API_URL = `${process.env.REACT_APP_API_URL}/api/words`;
 
 const initialState = {
   questions: [],

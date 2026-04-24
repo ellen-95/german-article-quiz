@@ -5,7 +5,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = BASE_DIR / "words.db"
-QUESTIONS_PATH = BASE_DIR.parent / "data" / "questions.json"
+QUESTIONS_PATH = BASE_DIR / "data" / "questions.json"
 
 
 def seed_words():
