@@ -3,7 +3,7 @@ import Loader from "./Loader";
 import Error from "./Error";
 import Question from "./Question";
 import NextButton from "./NextButton";
-import { useEffect, useReducer, useState } from "react";
+import { useReducer, useState } from "react";
 import StartScreen from "./StartScreen";
 import Progress from "./Progress";
 import FinishScreen from "./FinishScreen";
@@ -11,12 +11,13 @@ import Footer from "./Footer";
 import Timer from "./Timer";
 
 const SECS_PER_QUESTION = 10;
+const API_URL = "http://127.0.0.1:5000/api/words";
 
 const initialState = {
   questions: [],
 
   //loading, error, ready, active, finished
-  status: "loading",
+  status: "ready",
   index: 0,
   answer: null,
   correctAnswers: 0,
@@ -27,11 +28,10 @@ const initialState = {
 
 function reducer(state, action) {
   switch (action.type) {
-    case "dataReceived":
+    case "loading":
       return {
         ...state,
-        questions: action.payload,
-        status: "ready",
+        status: "loading",
       };
     case "dataFailed":
       return {
@@ -41,8 +41,13 @@ function reducer(state, action) {
     case "start":
       return {
         ...state,
+        questions: action.payload,
         status: "active",
-        secondsRemaining: action.payload * SECS_PER_QUESTION,
+        index: 0,
+        answer: null,
+        correctAnswers: 0,
+        wrongAnswers: [],
+        secondsRemaining: action.payload.length * SECS_PER_QUESTION,
       };
 
     case "newAnswer":
@@ -97,6 +102,7 @@ function reducer(state, action) {
 export default function App() {
   const [mode, setMode] = useState(null);
   const [level, setLevel] = useState(null);
+  const [error, setError] = useState(null);
   const [
     {
       questions,
@@ -111,37 +117,44 @@ export default function App() {
     dispatch,
   ] = useReducer(reducer, initialState);
 
-  const activeQuestions =
-    mode === "native"
-      ? questions.filter((question) => question.level === "Native")
-      : questions.filter((question) => question.level === level);
-
-  const numQuestions = activeQuestions.length;
-  const currentQuestion = activeQuestions[index];
-
-  useEffect(() => {
-    fetch("http://localhost:8000/questions")
-      .then((res) => res.json())
-      .then((data) => dispatch({ type: "dataReceived", payload: data }))
-      .catch((err) => dispatch({ type: "dataFailed" }));
-  }, []);
+  const numQuestions = questions.length;
+  const currentQuestion = questions[index];
 
   const isCenteredScreen = status === "ready" || status === "finished";
 
-  function handleStartQuiz() {
+  async function handleStartQuiz() {
     const needsLevel = mode === "practice" || mode === "test";
 
     if (!mode) return;
     if (needsLevel && !level) return;
 
-    dispatch({ type: "start", payload: numQuestions });
+    const selectedLevel = mode === "native" ? "Native" : level;
+
+    setError(null);
+    dispatch({ type: "loading" });
+
+    try {
+      const response = await fetch(
+        `${API_URL}?level=${encodeURIComponent(selectedLevel)}`
+      );
+
+      if (!response.ok) throw new Error("Could not fetch quiz words");
+
+      const data = await response.json();
+      if (!data.length) throw new Error("No quiz words found");
+
+      dispatch({ type: "start", payload: data });
+    } catch (err) {
+      setError("Failed to load questions. Please try again.");
+      dispatch({ type: "dataFailed" });
+    }
   }
 
   return (
     <div className="app">
       <Main className={isCenteredScreen ? "main-centered" : ""}>
         {status === "loading" && <Loader />}
-        {status === "error" && <Error />}
+        {status === "error" && <Error message={error} />}
         {status === "ready" && (
           <StartScreen
             mode={mode}
