@@ -9,6 +9,10 @@
 # frontend env
 /frontend/.env
 
+# SQLite databases
+words.db
+backend/words.db
+
 # local Python environments
 /.conda/
 /.venv/
