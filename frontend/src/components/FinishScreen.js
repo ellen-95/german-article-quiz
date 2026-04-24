@@ -50,7 +50,7 @@ function FinishScreen({
           className="btn btn-ui"
           onClick={() => setShowWrongAnswers((show) => !show)}
         >
-          Review wrong words
+          Wrong words
         </button>
         <button
           className="btn btn-ui"
