@@ -3,7 +3,7 @@ import Loader from "./Loader";
 import Error from "./Error";
 import Question from "./Question";
 import NextButton from "./NextButton";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import StartScreen from "./StartScreen";
 import Progress from "./Progress";
 import FinishScreen from "./FinishScreen";
@@ -12,6 +12,7 @@ import Timer from "./Timer";
 
 const SECS_PER_QUESTION = 10;
 const API_URL = `${process.env.REACT_APP_API_URL}/api/words`;
+const BEST_SCORES_KEY = "germanQuizBestScores";
 
 const initialState = {
   questions: [],
@@ -99,10 +100,45 @@ function reducer(state, action) {
   }
 }
 
+function getBestScoreStorageKey(mode, level) {
+  if (mode === "practice") return null;
+  if (mode === "native") return "native-Native";
+  if (mode === "test" && level) return `test-${level}`;
+  return null;
+}
+
+function getSavedBestScores() {
+  const savedBestScores = localStorage.getItem(BEST_SCORES_KEY);
+
+  if (!savedBestScores) return {};
+
+  try {
+    return JSON.parse(savedBestScores);
+  } catch {
+    return {};
+  }
+}
+
+function shuffleQuestions(questions) {
+  const shuffledQuestions = [...questions];
+
+  for (let index = shuffledQuestions.length - 1; index > 0; index--) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+
+    [shuffledQuestions[index], shuffledQuestions[randomIndex]] = [
+      shuffledQuestions[randomIndex],
+      shuffledQuestions[index],
+    ];
+  }
+
+  return shuffledQuestions;
+}
+
 export default function App() {
   const [mode, setMode] = useState(null);
   const [level, setLevel] = useState(null);
   const [error, setError] = useState(null);
+  const [savedBestScore, setSavedBestScore] = useState(null);
   const [
     {
       questions,
@@ -110,7 +146,6 @@ export default function App() {
       index,
       answer,
       correctAnswers,
-      highScore,
       secondsRemaining,
       wrongAnswers,
     },
@@ -121,6 +156,41 @@ export default function App() {
   const currentQuestion = questions[index];
 
   const isCenteredScreen = status === "ready" || status === "finished";
+  const bestScoreStorageKey = getBestScoreStorageKey(mode, level);
+
+  useEffect(() => {
+    if (!bestScoreStorageKey) {
+      setSavedBestScore(null);
+      return;
+    }
+
+    const savedBestScores = getSavedBestScores();
+    setSavedBestScore(savedBestScores[bestScoreStorageKey] || null);
+  }, [bestScoreStorageKey]);
+
+  useEffect(() => {
+    if (status !== "finished" || !bestScoreStorageKey) return;
+
+    const savedBestScores = getSavedBestScores();
+    const existingBestScore = savedBestScores[bestScoreStorageKey];
+
+    if (
+      !existingBestScore ||
+      correctAnswers > existingBestScore.bestScore
+    ) {
+      const updatedBestScore = {
+        bestScore: correctAnswers,
+        date: new Date().toISOString().split("T")[0],
+      };
+
+      savedBestScores[bestScoreStorageKey] = updatedBestScore;
+      localStorage.setItem(BEST_SCORES_KEY, JSON.stringify(savedBestScores));
+      setSavedBestScore(updatedBestScore);
+      return;
+    }
+
+    setSavedBestScore(existingBestScore);
+  }, [bestScoreStorageKey, correctAnswers, status]);
 
   async function handleStartQuiz() {
     const needsLevel = mode === "practice" || mode === "test";
@@ -143,7 +213,7 @@ export default function App() {
       const data = await response.json();
       if (!data.length) throw new Error("No quiz words found");
 
-      dispatch({ type: "start", payload: data });
+      dispatch({ type: "start", payload: shuffleQuestions(data) });
     } catch (err) {
       setError("Failed to load questions. Please try again.");
       dispatch({ type: "dataFailed" });
@@ -199,9 +269,10 @@ export default function App() {
           <FinishScreen
             correctAnswers={correctAnswers}
             numQuestions={numQuestions}
-            highScore={highScore}
             dispatch={dispatch}
             mode={mode}
+            level={level}
+            savedBestScore={savedBestScore}
             wrongAnswers={wrongAnswers}
           />
         )}

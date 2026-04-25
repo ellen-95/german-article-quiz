@@ -21,9 +21,10 @@ function sortMistakesByFrequency(mistakes) {
 function FinishScreen({
   correctAnswers,
   numQuestions,
-  highScore,
   dispatch,
   mode,
+  level,
+  savedBestScore,
   wrongAnswers,
 }) {
   const [showWrongAnswers, setShowWrongAnswers] = useState(false);
@@ -38,6 +39,7 @@ function FinishScreen({
 
   const isPracticeMode = mode === "practice";
   const isNativeMode = mode === "native";
+  const bestScoreLabel = isNativeMode ? "native-Native" : `test-${level}`;
 
   useEffect(() => {
     const existingMistakes = getSavedMistakes();
@@ -97,8 +99,11 @@ function FinishScreen({
           </>
         )}
       </p>
-      {!isPracticeMode && (
-        <p className="highscore">(best score: {highScore} correct answers)</p>
+      {!isPracticeMode && savedBestScore && (
+        <p className="highscore">
+          (best score for {bestScoreLabel}: {savedBestScore.bestScore} correct
+          answers on {savedBestScore.date})
+        </p>
       )}
       <div className="finish-actions">
         <button
