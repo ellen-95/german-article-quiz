@@ -1,4 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+const STORAGE_KEY = "germanQuizMistakes";
+
+function getSavedMistakes() {
+  const savedMistakes = localStorage.getItem(STORAGE_KEY);
+
+  if (!savedMistakes) return [];
+
+  try {
+    return JSON.parse(savedMistakes);
+  } catch {
+    return [];
+  }
+}
+
+function sortMistakesByFrequency(mistakes) {
+  return [...mistakes].sort((a, b) => b.frequency - a.frequency);
+}
 
 function FinishScreen({
   correctAnswers,
@@ -9,6 +27,7 @@ function FinishScreen({
   wrongAnswers,
 }) {
   const [showWrongAnswers, setShowWrongAnswers] = useState(false);
+  const [savedMistakes, setSavedMistakes] = useState([]);
   const percentage = (correctAnswers / numQuestions) * 100;
   let emoji;
   if (percentage === 100) emoji = "🏅";
@@ -19,6 +38,42 @@ function FinishScreen({
 
   const isPracticeMode = mode === "practice";
   const isNativeMode = mode === "native";
+
+  useEffect(() => {
+    const existingMistakes = getSavedMistakes();
+
+    if (wrongAnswers.length === 0) {
+      setSavedMistakes(sortMistakesByFrequency(existingMistakes));
+      return;
+    }
+
+    const updatedMistakes = [...existingMistakes];
+
+    wrongAnswers.forEach((wrongAnswer) => {
+      const existingMistake = updatedMistakes.find(
+        (item) =>
+          item.word === wrongAnswer.word &&
+          item.correctArticle === wrongAnswer.correctArticle
+      );
+
+      if (existingMistake) {
+        existingMistake.frequency += 1;
+        existingMistake.selectedArticle = wrongAnswer.selectedArticle;
+      } else {
+        updatedMistakes.push({
+          word: wrongAnswer.word,
+          correctArticle: wrongAnswer.correctArticle,
+          selectedArticle: wrongAnswer.selectedArticle,
+          frequency: 1,
+        });
+      }
+    });
+
+    const sortedMistakes = sortMistakesByFrequency(updatedMistakes);
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(sortedMistakes));
+    setSavedMistakes(sortedMistakes);
+  }, [wrongAnswers]);
 
   return (
     <div className="finish">
@@ -61,17 +116,21 @@ function FinishScreen({
       </div>
       {showWrongAnswers && (
         <div className="review-section">
-          {wrongAnswers.length === 0 ? (
+          {savedMistakes.length === 0 ? (
             <p className="review-empty">
               🎉Perfect done! No mistakes to review.
             </p>
           ) : (
             <ul className="review-list">
-              {wrongAnswers.map((item, index) => (
-                <li className="review-item" key={`${item.id}`}>
+              {savedMistakes.map((item) => (
+                <li
+                  className="review-item"
+                  key={`${item.word}-${item.correctArticle}`}
+                >
                   <span className="review-word">{item.word}</span> — correct:{" "}
                   <strong>{item.correctArticle}</strong>, your answer:{" "}
-                  <strong>{item.selectedArticle}</strong>
+                  <strong>{item.selectedArticle}</strong> · missed{" "}
+                  {item.frequency} {item.frequency === 1 ? "time" : "times"}
                 </li>
               ))}
             </ul>
