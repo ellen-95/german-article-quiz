@@ -10,8 +10,7 @@
 /frontend/.env
 
 # SQLite databases
-words.db
-backend/words.db
+/words.db
 
 # local Python environments
 /.conda/
